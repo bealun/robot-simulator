@@ -1,7 +1,8 @@
 # Robot Simulator
 
 ## Overview
-The Robot Simulator is a simple command-line application where you can control a robot on a 5x5 grid. You can place the robot, move it forward, rotate it, and check its current position and direction.
+
+This is a simple robot simulator that allows you to control a robot on a 5x5 grid. You can issue commands to place the robot, move it, turn it, and report its position. The simulator supports both interactive command entry and command processing from a file.
 
 ## Features
 
@@ -21,6 +22,12 @@ The simulator accepts the following commands within the grid:
 - `RIGHT` - Turn the robot right.
 - `REPORT` - Print the robot's current position and direction.
 - `EXIT` - Exit the application.
+
+## File Input
+
+You can also process commands from a file. The file should contain commands separated by newlines. To process a file, type `file` at the command prompt and provide the path to the file when prompted. 
+The file path now points directly to pre-made test files under `RobotSimulator/SampleInputs/`.
+
 
 ### Example
 
@@ -46,5 +53,12 @@ dotnet test
 ```
 dotnet run --project RobotSimulator/RobotSimulator.csproj
 ```
+1. **Interactive Mode**:
+    - Run the application.
+    - Enter commands directly or type `file` to input a file path.
+
+2. **File Mode**:
+    - Run the application.
+    - When prompted, type `file` and provide the path to the file. 
 
 
