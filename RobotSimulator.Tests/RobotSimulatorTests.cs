@@ -7,9 +7,55 @@ public class RobotSimulatorTests
 {
     private static RobotSimulatorService CreateService()
     {
-        var robot = new Robot();
+        Robot robot = new Robot();
         return new RobotSimulatorService(robot);
     }
+
+    #region file inputs
+
+    [Fact]
+    public void ProcessCommandsFromFile_EmptyFile_ShouldNotifyEmptyFile()
+    {
+        RobotSimulatorService robotService = CreateService();
+        var tempFilePath = Path.GetTempFileName();
+        File.WriteAllText(tempFilePath, string.Empty);
+
+        using var consoleOutput = new StringWriter();
+        Console.SetOut(consoleOutput);
+
+        Program.ProcessCommandsFromFile(tempFilePath, robotService);
+
+        var result = consoleOutput.ToString();
+        Assert.Contains("The file is empty. No commands to process.", result);
+
+        // clean up
+        File.Delete(tempFilePath);
+    }
+    
+    [Fact]
+    public void ProcessCommandsFromFile_ValidCommands_ShouldProcessCommands()
+    {
+        Robot robot = new Robot();
+        RobotSimulatorService robotService = CreateService();
+        var tempFilePath = Path.GetTempFileName();
+        File.WriteAllText(tempFilePath, "PLACE,0,0,NORTH\nMOVE\nREPORT");
+
+        using var consoleOutput = new StringWriter();
+        Console.SetOut(consoleOutput);
+
+        Program.ProcessCommandsFromFile(tempFilePath, robotService);
+
+        var result = consoleOutput.ToString();
+        Assert.Contains("Robot placed at (0, 0) facing North.", result);
+        Assert.Contains("Robot moved.", result);
+
+        // clean up
+        File.Delete(tempFilePath);
+    }
+
+    #endregion
+
+    #region command inputs
 
     [Fact]
     public void PlaceAndMoveNorth_ShouldUpdatePositionToNorth()
@@ -81,6 +127,8 @@ public class RobotSimulatorTests
         // final position after all moves
         Assert.Equal("1,4,West", report); 
     }
+    
+    #endregion
     
     #endregion
 }
